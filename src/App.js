@@ -1,14 +1,18 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import './App.css';
-import AboutPage from './Components/pages/AboutPage';
-import TopNavigation from './Components/navigation/TopNavigation';
+import TopNavigation from './components/navigation/TopNavigation';
+import AboutPage from './components/pages/AboutPage';
+import JoinPage from './components/pages/JoinPage';
 
 const App = () => {
   return (
     <div className="App">
       <TopNavigation />
-      <Route exact path="/about" component={AboutPage} />
+      <Switch>
+        <Route exact path="/about" component={AboutPage} />
+        <Route exact path="/join" component={JoinPage} />
+      </Switch>
     </div>
   );
 }
