@@ -42,7 +42,9 @@ function ButtonAppBar(props) {
           <Link to="/join" className="link">
             <Button color="inherit">Join</Button>
           </Link>
-          <Button color="inherit">Login</Button>
+          <Link to="/login" className="link">
+            <Button color="inherit">Login</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
