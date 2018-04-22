@@ -34,7 +34,7 @@ function ButtonAppBar(props) {
             </Link>
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.flex}>
-						Voting App
+					  Voting App
           </Typography>
           <Link to="/about" className="link">
             <Button color="inherit">About</Button>
@@ -48,7 +48,7 @@ function ButtonAppBar(props) {
 }
 
 ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(ButtonAppBar);
