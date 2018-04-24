@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { JoinForm } from '../forms/JoinForm';
+import  JoinForm  from '../forms/JoinForm';
 
 export default class JoinPage extends Component {
   render() {

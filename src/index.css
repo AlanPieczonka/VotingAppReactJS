@@ -9,6 +9,11 @@ body {
   text-decoration: none;
 }
 
+.link--black {
+  color: #000;
+  text-decoration: none;
+}
+
 .weight300 {
   font-weight: 300;
 }
