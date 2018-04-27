@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import JoinForm from '../forms/JoinForm';
 
 export const JoinPage = ({ handleSubmit }) => {
-  const submitForm = (formValues) => {
-    console.log('submitting form: ', formValues);
+  const submitForm = (values) => {
+    console.log('Form values: ', values);
   };
 
   return (
@@ -13,6 +14,10 @@ export const JoinPage = ({ handleSubmit }) => {
       handleSubmit={handleSubmit}
     />
   );
+};
+
+JoinPage.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default reduxForm({
