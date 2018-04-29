@@ -1,14 +1,18 @@
-import { createStore, combineReducers } from 'redux';
-import { reducer as reduxFormReducer } from 'redux-form';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { reducer as form } from 'redux-form';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+
+import user from './reducers/user';
 
 const rootReducer = combineReducers({
-  form: reduxFormReducer,
+  form,
+  user,
 });
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(),
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 export default store;
