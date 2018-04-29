@@ -23,12 +23,12 @@ const createTextField = ({
 );
 
 const JoinForm = ({
-  handleSubmit, onSubmit, pristine, reset, submitting,
+  handleSubmit, pristine, reset, submitting,
 }) => (
   <div style={{ border: '2px solid black', padding: '5%' }}>
     <h2 className="weight300">This is JoinForm</h2>
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit}>
         <Field
           name="email"
           type="email"
