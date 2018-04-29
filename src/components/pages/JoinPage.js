@@ -1,25 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import JoinForm from '../forms/JoinForm';
+import { signup } from '../../actions/join';
 
-export const JoinPage = ({ handleSubmit }) => {
-  const submitForm = (values) => {
-    console.log('Form values: ', values);
-  };
-
+const JoinPage = (props) => {
+  const handleSignIn = values => props.signup(values).then(props.history.push('/'));
   return (
     <JoinForm
-      onSubmit={submitForm}
-      handleSubmit={handleSubmit}
+      onSubmit={handleSignIn}
     />
   );
 };
 
 JoinPage.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  signup: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-export default reduxForm({
-  form: 'JoinForm',
-})(JoinPage);
+export default connect(null, { signup })(JoinPage);
