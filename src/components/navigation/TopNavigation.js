@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -8,6 +9,8 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 const styles = {
   root: {
@@ -22,8 +25,9 @@ const styles = {
   },
 };
 
-function ButtonAppBar(props) {
+function TopNavigation(props) {
   const { classes } = props;
+  const { isLoggedIn } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -39,20 +43,37 @@ function ButtonAppBar(props) {
           <Link to="/about" className="link">
             <Button color="inherit">About</Button>
           </Link>
-          <Link to="/join" className="link">
-            <Button color="inherit">Join</Button>
-          </Link>
-          <Link to="/login" className="link">
-            <Button color="inherit">Login</Button>
-          </Link>
+          {isLoggedIn ? (
+            <Link to="/logout" className="link">
+              <Button color="inherit">Logout</Button>
+            </Link>
+          )
+            : (
+              <Fragment>
+                <Link to="/join" className="link">
+                  <Button color="inherit">Join</Button>
+                </Link>
+                <Link to="/login" className="link">
+                  <Button color="inherit">Login</Button>
+                </Link>
+              </Fragment>
+            )}
         </Toolbar>
       </AppBar>
     </div>
   );
 }
 
-ButtonAppBar.propTypes = {
+TopNavigation.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(ButtonAppBar);
+const mapStateToProps = state => ({
+  isLoggedIn: !isEmpty(state.user),
+});
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps),
+)(TopNavigation);
