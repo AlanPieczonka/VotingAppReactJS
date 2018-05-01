@@ -6,6 +6,8 @@
     "@material-ui/icons": "^1.0.0-beta.42",
     "ajv": "^6.4.0",
     "axios": "^0.18.0",
+    "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.10",
     "material-ui": "^1.0.0-beta.42",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
@@ -16,7 +18,8 @@
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.2",
-    "redux-form": "^7.3.0"
+    "redux-form": "^7.3.0",
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "dev": "PORT=4200 react-scripts start",
