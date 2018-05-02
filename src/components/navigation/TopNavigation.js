@@ -11,6 +11,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { logout } from '../../actions/auth';
 
 const styles = {
   root: {
@@ -28,6 +29,7 @@ const styles = {
 function TopNavigation(props) {
   const { classes } = props;
   const { isLoggedIn } = props;
+  const { logout } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -44,8 +46,8 @@ function TopNavigation(props) {
             <Button color="inherit">About</Button>
           </Link>
           {isLoggedIn ? (
-            <Link to="/logout" className="link">
-              <Button color="inherit">Logout</Button>
+            <Link to="/" className="link">
+              <Button color="inherit" onClick={() => logout()}>Logout</Button>
             </Link>
           )
             : (
@@ -75,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps),
+  connect(mapStateToProps, { logout }),
 )(TopNavigation);
