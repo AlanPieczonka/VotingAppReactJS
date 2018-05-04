@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { logout } from '../../actions/auth';
+import { showSnack } from '../../actions/snackbar';
 
 const styles = {
   root: {
@@ -27,9 +28,14 @@ const styles = {
 };
 
 function TopNavigation(props) {
-  const { classes } = props;
-  const { isLoggedIn } = props;
-  const { logout } = props;
+  const {
+    classes, isGuest, logout, showSnack,
+  } = props;
+  const logoutAndShowSnack = () => {
+    logout();
+    showSnack('You have succesfully logged out!');
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -45,21 +51,22 @@ function TopNavigation(props) {
           <Link to="/about" className="link">
             <Button color="inherit">About</Button>
           </Link>
-          {isLoggedIn ? (
-            <Link to="/" className="link">
-              <Button color="inherit" onClick={() => logout()}>Logout</Button>
-            </Link>
-          )
+          {isGuest ? (
+            <Fragment>
+              <Link to="/join" className="link">
+                <Button color="inherit">Join</Button>
+              </Link>
+              <Link to="/login" className="link">
+                <Button color="inherit">Login</Button>
+              </Link>
+            </Fragment>
+            )
             : (
-              <Fragment>
-                <Link to="/join" className="link">
-                  <Button color="inherit">Join</Button>
-                </Link>
-                <Link to="/login" className="link">
-                  <Button color="inherit">Login</Button>
-                </Link>
-              </Fragment>
-            )}
+              <Link to="/" className="link">
+                <Button color="inherit" onClick={() => logoutAndShowSnack()}>Logout</Button>
+              </Link>
+            )
+          }
         </Toolbar>
       </AppBar>
     </div>
@@ -68,14 +75,14 @@ function TopNavigation(props) {
 
 TopNavigation.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  isLoggedIn: PropTypes.bool.isRequired,
+  isGuest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  isLoggedIn: !isEmpty(state.user),
+  isGuest: isEmpty(state.user),
 });
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { logout }),
+  connect(mapStateToProps, { logout, showSnack }),
 )(TopNavigation);
