@@ -1,40 +1,40 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import JoinForm from '../forms/JoinForm';
 import { signup } from '../../actions/join';
-import MessageSnackbar from '../messages/MessageSnackbar';
+import { showSnack } from '../../actions/snackbar';
 
-class JoinPage extends Component {
-  state = {
-    error: false,
-  }
-  handleSignIn = (values) => {
-    this.props.signup(values)
-      .then(() => this.props.history.push('/'))
+const JoinPage = (props) => {
+  const handleSignIn = (values) => {
+    props.signup(values)
+      .then(() => {
+        props.history.push('/');
+        props.showSnack('You have successfully created account!')
+      })
       .catch((err) => {
-        const error = err.response.data.errors.email || 'There has been an error';
-        this.setState({ error });
+        props.showSnack(
+          err.response !== undefined
+            ? err.response.data.errors.email
+            : 'There has been an error!',
+        );
       });
-  }
-  render() {
-    const { error } = this.state;
-    return (
-      <Fragment>
-        {error && <MessageSnackbar message={error} /> }
-        <JoinForm
-          onSubmit={this.handleSignIn}
-        />
-      </Fragment>
-    );
-  }
-}
+  };
+  return (
+    <Fragment>
+      <JoinForm
+        onSubmit={handleSignIn}
+      />
+    </Fragment>
+  );
+};
 
 JoinPage.propTypes = {
   signup: PropTypes.func.isRequired,
+  showSnack: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default connect(null, { signup })(JoinPage);
+export default connect(null, { signup, showSnack })(JoinPage);
