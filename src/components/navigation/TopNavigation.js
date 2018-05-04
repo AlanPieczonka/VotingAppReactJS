@@ -27,10 +27,7 @@ const styles = {
   },
 };
 
-function TopNavigation(props) {
-  const {
-    classes, isGuest, logout, showSnack,
-  } = props;
+const TopNavigation = ({classes, isGuest, logout, showSnack}) => {
   const logoutAndShowSnack = () => {
     logout();
     showSnack('You have succesfully logged out!');
