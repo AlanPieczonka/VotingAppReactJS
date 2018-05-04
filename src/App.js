@@ -12,15 +12,15 @@ import HomePage from './components/pages/HomePage';
 import MessageSnackbar from './components/messages/MessageSnackbar';
 import NotFoundPage from './components/pages/NotFoundPage';
 
-const App = props => (
+const App = ({ isGuest, snackbarMessage }) => (
   <div className="App">
     <TopNavigation />
-    {props.snackbarMessage.length > 0 && <MessageSnackbar message={props.snackbarMessage} />}
+    {snackbarMessage.length > 0 && <MessageSnackbar message={snackbarMessage} />}
     <Switch>
       <Route exact path="/" component={HomePage} />
       <Route exact path="/about" component={AboutPage} />
       {
-        props.isGuest &&
+        isGuest &&
         <Fragment>
           <Route exact path="/join" component={JoinPage} />
           <Route exact path="/login" component={LoginPage} />
