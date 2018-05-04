@@ -1,11 +1,11 @@
-export const showSnackbar = text => ({
+export const showSnackbar = message => ({
   type: 'SHOW_SNACKBAR',
-  text,
+  message,
 });
 
 export const closeSnackbar = () => ({
   type: 'CLOSE_SNACKBAR',
 });
 
-export const showSnack = text => dispatch => dispatch(showSnackbar(text));
+export const showSnack = message => dispatch => dispatch(showSnackbar(message));
 
