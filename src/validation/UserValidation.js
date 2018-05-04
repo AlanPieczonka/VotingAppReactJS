@@ -1,5 +1,4 @@
 export default function (values) {
-  // debugger;
   const errors = {};
   const requiredFields = [
     'email',
