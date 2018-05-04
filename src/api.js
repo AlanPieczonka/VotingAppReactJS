@@ -8,5 +8,7 @@ export default {
   user: {
     signup: user =>
       API.post('/join', { user }).then(res => res.data.user),
+    login: credentials =>
+      API.post('/auth', { credentials }).then(res => res.data.user),
   },
 };
