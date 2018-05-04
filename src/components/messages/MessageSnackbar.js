@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from 'material-ui/Snackbar';
+import { connect } from 'react-redux';
+import { closeSnackbar } from '../../actions/snackbar';
 
 class MessageSnackbar extends React.Component {
   state = {
@@ -10,6 +12,7 @@ class MessageSnackbar extends React.Component {
   }
   handleClose = () => {
     this.setState({ open: false });
+    this.props.closeSnackbar();
   }
   render() {
     const { open, vertical, horizontal } = this.state;
@@ -32,6 +35,13 @@ class MessageSnackbar extends React.Component {
 
 MessageSnackbar.propTypes = {
   message: PropTypes.string.isRequired,
+  closeSnackbar: PropTypes.func.isRequired,
 };
 
-export default MessageSnackbar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    closeSnackbar: () => dispatch(closeSnackbar()),
+  }
+};
+
+export default connect(null, mapDispatchToProps)(MessageSnackbar);
