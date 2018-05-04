@@ -3,47 +3,8 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
 import validate from './../../validation/UserValidation';
-
-const createTextField = ({
-  input,
-  label,
-  type,
-  fullWidth,
-  meta: { touched, error },
-}) => {
-  const isError = !!error;
-  return (
-    <TextField
-      label={label}
-      fullWidth={fullWidth}
-      type={type}
-      error={touched && isError}
-      helperText={error}
-      {...input}
-    />
-  );
-};
-
-createTextField.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  fullWidth: PropTypes.bool,
-  meta: PropTypes.shape({
-    touched: PropTypes.bool,
-    error: PropTypes.string,
-  }),
-};
-
-createTextField.defaultProps = {
-  fullWidth: true,
-  meta: {
-    touched: false,
-    error: null,
-  },
-};
+import CreateTextField from '../fields/CreateTextField';
 
 const JoinForm = ({
   handleSubmit, reset, pristine, submitting,
@@ -56,14 +17,14 @@ const JoinForm = ({
           name="email"
           type="email"
           label="Email"
-          component={createTextField}
+          component={CreateTextField}
         />
         <div style={{ margin: '20px 0' }}>
           <Field
             name="password"
             type="password"
             label="Password"
-            component={createTextField}
+            component={CreateTextField}
           />
         </div>
         <div style={{ margin: '20px 0' }}>
@@ -71,7 +32,7 @@ const JoinForm = ({
             name="passwordConfirmation"
             type="password"
             label="Password"
-            component={createTextField}
+            component={CreateTextField}
           />
         </div>
         <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
