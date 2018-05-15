@@ -8,4 +8,3 @@ export const closeSnackbar = () => ({
 });
 
 export const showSnack = message => dispatch => dispatch(showSnackbar(message));
-
