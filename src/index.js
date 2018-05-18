@@ -8,6 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import store from './store';
 import { userLoggedIn } from './actions/auth';
+import setAuthorizationHeader from './utils/setAuthorizationHeader';
 
 if (localStorage.votingappJWT) {
   const payload = decode(localStorage.votingappJWT);
@@ -15,6 +16,7 @@ if (localStorage.votingappJWT) {
     email: payload.email,
     token: localStorage.votingappJWT,
   };
+  setAuthorizationHeader(localStorage.votingappJWT);
   store.dispatch(userLoggedIn(user));
 }
 
