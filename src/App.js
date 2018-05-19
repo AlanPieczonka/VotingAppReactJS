@@ -11,33 +11,50 @@ import LoginPage from './components/pages/LoginPage';
 import HomePage from './components/pages/HomePage';
 import MessageSnackbar from './components/messages/MessageSnackbar';
 import NotFoundPage from './components/pages/NotFoundPage';
+import SinglePollPage from './components/pages/SinglePollPage';
+import NewPollPage from './components/pages/NewPollPage';
+import UserPollsPage from './components/pages/UserPollsPage';
+import UserRoute from './components/routes/UserRoute';
+import GuestRoute from './components/routes/GuestRoute';
 
-const App = ({ isGuest, snackbarMessage }) => (
+const App = ({ snackbarMessage }) => (
   <div className="App">
     <TopNavigation />
     {snackbarMessage.length > 0 && <MessageSnackbar message={snackbarMessage} />}
     <Switch>
       <Route exact path="/" component={HomePage} />
       <Route exact path="/about" component={AboutPage} />
-      {
-        isGuest &&
-        <Fragment>
-          <Route exact path="/join" component={JoinPage} />
-          <Route exact path="/login" component={LoginPage} />
-        </Fragment>
-      }
+      <UserRoute
+        exact
+        path="/polls/new"
+        component={NewPollPage}
+      />
+      <UserRoute
+        exact
+        path="/user/polls"
+        component={UserPollsPage}
+      />
+      <Route exact path="/polls/:poll_id" component={SinglePollPage} />
+      <GuestRoute
+        exact
+        path="/join"
+        component={JoinPage}
+      />
+      <GuestRoute
+        exact
+        path="/login"
+        component={LoginPage}
+      />
       <Route path="/*" component={NotFoundPage} />
     </Switch>
   </div>
 );
 
 App.propTypes = {
-  isGuest: PropTypes.bool.isRequired,
   snackbarMessage: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  isGuest: isEmpty(state.user),
   snackbarMessage: state.snackbar,
 });
 

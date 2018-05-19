@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash/isEmpty';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -14,20 +13,9 @@ import { compose } from 'redux';
 import { logout } from '../../actions/auth';
 import { showSnack } from '../../actions/snackbar';
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-  flex: {
-    flex: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-};
-
-const TopNavigation = ({classes, isGuest, logout, showSnack}) => {
+const TopNavigation = ({
+  classes, isAuthenticated, userEmail, logout, showSnack,
+}) => {
   const logoutAndShowSnack = () => {
     logout();
     showSnack('You have succesfully logged out!');
@@ -45,10 +33,16 @@ const TopNavigation = ({classes, isGuest, logout, showSnack}) => {
           <Typography variant="title" color="inherit" className={classes.flex}>
 					  Voting App
           </Typography>
+          {userEmail && <Link to="/user/polls" className="link"><Button color="inherit">{userEmail}</Button></Link>}
+          {isAuthenticated &&
+          <Link to="/polls/new" className="link">
+            <Button color="inherit">New Poll</Button>
+          </Link>
+          }
           <Link to="/about" className="link">
             <Button color="inherit">About</Button>
           </Link>
-          {isGuest ? (
+          {!isAuthenticated ? (
             <Fragment>
               <Link to="/join" className="link">
                 <Button color="inherit">Join</Button>
@@ -68,15 +62,30 @@ const TopNavigation = ({classes, isGuest, logout, showSnack}) => {
       </AppBar>
     </div>
   );
-}
+};
+
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+  flex: {
+    flex: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+};
 
 TopNavigation.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  userEmail: PropTypes.string,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  isGuest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  isGuest: isEmpty(state.user),
+  isAuthenticated: !!state.user.token,
+  userEmail: state.user.email,
 });
 
 export default compose(

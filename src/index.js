@@ -10,10 +10,13 @@ import store from './store';
 import { userLoggedIn } from './actions/auth';
 import setAuthorizationHeader from './utils/setAuthorizationHeader';
 
-if (localStorage.votingappJWT) {
+if (localStorage.votingappJWT && localStorage.votingappUserID) {
   const payload = decode(localStorage.votingappJWT);
+  // console.log(payload);
+  // debugger;
   const user = {
     email: payload.email,
+    id: localStorage.votingappUserID,
     token: localStorage.votingappJWT,
   };
   setAuthorizationHeader(localStorage.votingappJWT);
