@@ -14,7 +14,7 @@ const styles = theme => ({
   }),
 });
 
-const PollsList = (endpoint, header) => withStyles(styles)(class extends React.Component {
+class PollsList extends React.Component {
         state = {
           polls: [],
         }
@@ -22,10 +22,10 @@ const PollsList = (endpoint, header) => withStyles(styles)(class extends React.C
           const API = axios.create({
             baseURL: 'http://localhost:3000',
           });
-          API.get(endpoint).then(response => this.setState({ polls: response.data.polls }));
+          API.get(this.props.endpoint).then(response => this.setState({ polls: response.data.polls }));
         }
         render() {
-          const { classes } = this.props;
+          const { classes, endpoint, header } = this.props;
           const polls = this.state.polls.map(poll =>
             (<div key={poll._id}>
               <Link to={`/polls/${poll._id}`} style={{ textDecoration: 'none' }}>
@@ -35,7 +35,7 @@ const PollsList = (endpoint, header) => withStyles(styles)(class extends React.C
                   </Typography>
                 </Paper>
               </Link>
-            </div>));
+             </div>));
           return (
             <div className={classes.root}>
               <h1>{header}</h1>
@@ -45,6 +45,6 @@ const PollsList = (endpoint, header) => withStyles(styles)(class extends React.C
             </div>
           );
         }
-});
+}
 
-export default PollsList;
+export default withStyles(styles)(PollsList);
