@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
+import TextField from '@material-ui/core/TextField';
 
 class SinglePoll extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class SinglePoll extends React.Component {
     this.state = {
       poll: {},
       isAuthorized: false,
+      newOption: '',
     };
   }
 
@@ -26,10 +28,11 @@ class SinglePoll extends React.Component {
           this.setState({ isAuthorized: true });
         }
       });
-    
   }
 
-  vote(id) {
+  handleChange = name => event => this.setState({ [name]: event.target.value });
+
+  vote = (id) => {
     const API = axios.create({
       baseURL: 'http://localhost:3000',
     });
@@ -38,11 +41,30 @@ class SinglePoll extends React.Component {
       .catch(error => console.error('There has been an error with voting', error));
   }
 
-  deletePoll() {
+  deletePoll = () => {
     const API = axios.create({
       baseURL: 'http://localhost:3000',
     });
-    API.delete(`/polls/${this.state.poll._id}`).then(() => this.props.history.push("/"));
+    API.delete(`/polls/${this.state.poll._id}`).then(() => this.props.history.push('/'));
+  }
+
+  addNewOption = () => {
+    const { newOption } = this.state;
+    if (newOption.length > 0) {
+      const API = axios.create({
+        baseURL: 'http://localhost:3000',
+      });
+      API.put(`/polls/${this.state.poll._id}`, {
+        newOption: {
+          title: newOption,
+        },
+      })
+        .then(response => this.setState({ poll: response.data.poll }))
+        .then(() => this.setState({ newOption: '' }))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   render() {
@@ -58,6 +80,7 @@ class SinglePoll extends React.Component {
     }
     const { isAuthorized } = this.state;
     const { title, userId, _id } = this.state;
+    const { isAuthenticated } = this.props;
     return (
       <div>
         <h1 className="weight300">Single Poll</h1>
@@ -76,6 +99,24 @@ class SinglePoll extends React.Component {
             </Button>
           </Fragment>
         )}
+        {
+          isAuthenticated && (
+            <Fragment>
+              <hr />
+              <h1>Add new option</h1>
+              <form onSubmit={this.addNewOption}>
+                <TextField
+                  id="new-option"
+                  label="New option"
+                  margin="normal"
+                  value={this.state.newOption}
+                  onChange={this.handleChange('newOption')}
+                />
+                <button type="submit">Add new option</button>
+              </form>
+            </Fragment>
+          )
+        }
       </div>
     );
   }
@@ -83,6 +124,7 @@ class SinglePoll extends React.Component {
 
 const mapStateToProps = state => ({
   currentUserId: state.user.id,
+  isAuthenticated: !!state.user.token,
 });
 
 export default connect(mapStateToProps)(SinglePoll);
