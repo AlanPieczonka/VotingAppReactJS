@@ -5,13 +5,10 @@ import Button from 'material-ui/Button';
 import TextField from '@material-ui/core/TextField';
 
 class SinglePoll extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      poll: {},
-      isAuthorized: false,
-      newOption: '',
-    };
+  state = {
+    poll: {},
+    isAuthorized: false,
+    newOption: '',
   }
 
   componentDidMount() {
