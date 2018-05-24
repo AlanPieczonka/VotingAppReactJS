@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import { closeSnackbar } from '../../actions/snackbar';
 
-class MessageSnackbar extends React.Component {
+class MessageSnackbar extends Component {
   state = {
     open: true,
     vertical: 'top',

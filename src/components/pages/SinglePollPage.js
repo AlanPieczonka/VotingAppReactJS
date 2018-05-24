@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import TextField from '@material-ui/core/TextField';
 
-class SinglePoll extends React.Component {
+class SinglePoll extends Component {
   state = {
     poll: {},
     isAuthorized: false,

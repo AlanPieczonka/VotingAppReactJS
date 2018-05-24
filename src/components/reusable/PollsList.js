@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -14,7 +14,7 @@ const styles = theme => ({
   }),
 });
 
-class PollsList extends React.Component {
+class PollsList extends Component {
         state = {
           polls: [],
         }
