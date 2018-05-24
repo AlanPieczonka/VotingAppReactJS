@@ -3,6 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 class SinglePoll extends Component {
   state = {
@@ -71,15 +72,19 @@ class SinglePoll extends Component {
         (<div key={option._id}>
           <h2>Option: {option.title} Votes: {option.votes}</h2>
           <button onClick={() => this.vote(option._id)}>Vote</button>
-        </div>));
+         </div>));
     } else {
       options = <h1>Working</h1>;
     }
     const { isAuthorized } = this.state;
-    const { title, userId, _id } = this.state;
+    const { title, userId, _id } = this.state.poll;
     const { isAuthenticated } = this.props;
     return (
-      <div>
+      <div style={{marginTop: '10px'}}>
+        <Typography variant="title" gutterBottom>
+          {title}
+        </Typography>
+        <hr />
         <h1 className="weight300">Single Poll</h1>
         <h3>Poll ID: {this.props.match.params.poll_id}</h3>
         <h4>Poll ID from state: {_id}</h4>
