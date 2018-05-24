@@ -54,7 +54,7 @@ class SinglePoll extends React.Component {
       const API = axios.create({
         baseURL: 'http://localhost:3000',
       });
-      API.put(`/polls/${this.state.poll._id}`, {
+      API.post(`/polls/${this.state.poll._id}/option`, {
         newOption: {
           title: newOption,
         },
