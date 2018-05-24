@@ -36,7 +36,7 @@ class SinglePoll extends React.Component {
     const API = axios.create({
       baseURL: 'http://localhost:3000',
     });
-    API.put(`polls/${this.state.poll._id}/${id}/up`)
+    API.patch(`polls/${this.state.poll._id}/${id}/up`)
       .then(response => this.setState({ poll: response.data.poll }))
       .catch(error => console.error('There has been an error with voting', error));
   }
@@ -54,7 +54,7 @@ class SinglePoll extends React.Component {
       const API = axios.create({
         baseURL: 'http://localhost:3000',
       });
-      API.put(`/polls/${this.state.poll._id}`, {
+      API.post(`/polls/${this.state.poll._id}/option`, {
         newOption: {
           title: newOption,
         },
