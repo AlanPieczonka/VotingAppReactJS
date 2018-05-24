@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
+// import Button from 'material-ui/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { Pie } from 'react-chartjs-2';
+import Button from '@material-ui/core/Button';
 
 class SinglePoll extends Component {
   state = {
@@ -25,6 +27,7 @@ class SinglePoll extends Component {
         if (poll.userId === currentUserId) {
           this.setState({ isAuthorized: true });
         }
+        console.log(poll);
       });
   }
 
@@ -66,46 +69,63 @@ class SinglePoll extends Component {
   }
 
   render() {
-    let options;
+    const { isAuthorized } = this.state;
+    const {
+      title, userId, _id, options,
+    } = this.state.poll;
+    const { isAuthenticated } = this.props;
+    let chart;
+
+    let optionsDiv;
     if (this.state.poll.options) {
-      options = this.state.poll.options.map((option, i) =>
+      optionsDiv = this.state.poll.options.map((option, i) =>
         (<div key={option._id}>
           <h2>Option: {option.title} Votes: {option.votes}</h2>
           <button onClick={() => this.vote(option._id)}>Vote</button>
          </div>));
     } else {
-      options = <h1>Working</h1>;
+      optionsDiv = <h1>Working</h1>;
     }
-    const { isAuthorized } = this.state;
-    const { title, userId, _id } = this.state.poll;
-    const { isAuthenticated } = this.props;
+
+    if (options) {
+      // const chart = prepareChart(this.state.poll.options);
+      const labels = options.map(option => option.title);
+      const votes = options.map(option => option.votes);
+      const backgroundColor = ['#FF6384',
+        '#36A2EB',
+        '#FFCE56'];
+      const hoverBackgroundColor = [
+        '#FF6384',
+        '#36A2EB',
+        '#FFCE56',
+      ];
+      const data = {
+        labels,
+        datasets: [{
+          data: votes,
+          backgroundColor,
+          hoverBackgroundColor,
+        }],
+      };
+      chart = <Pie data={data} />;
+    } else {
+      chart = <h1>Preparing your chart...</h1>;
+    }
     return (
-      <div style={{marginTop: '10px'}}>
+      <div style={{ marginTop: '10px' }}>
         <Typography variant="title" gutterBottom>
           {title}
         </Typography>
-        <hr />
-        <h1 className="weight300">Single Poll</h1>
-        <h3>Poll ID: {this.props.match.params.poll_id}</h3>
-        <h4>Poll ID from state: {_id}</h4>
-        <h5>Title: {title}</h5>
-        <h5>UserID: {userId}</h5>
-        {options}
-        <h5>After options</h5>
-        <button>Share on Twitter</button>
-        {isAuthorized && (
-          <Fragment>
-            <h1>This is your poll, do you want to delete?</h1>
-            <Button onClick={() => this.deletePoll()} type="button" variant="raised" color="secondary">
-              Delete
-            </Button>
-          </Fragment>
-        )}
+        <div>
+          {chart}
+        </div>
+        {optionsDiv}
         {
           isAuthenticated && (
             <Fragment>
-              <hr />
-              <h1>Add new option</h1>
+              <Typography variant="title" gutterBottom>
+          Add new option
+              </Typography>
               <form onSubmit={this.addNewOption}>
                 <TextField
                   id="new-option"
@@ -116,9 +136,19 @@ class SinglePoll extends Component {
                 />
                 <button type="submit">Add new option</button>
               </form>
+              <Button variant="raised" size="small" color="primary">
+                      Share on Twitter
+              </Button>
             </Fragment>
           )
         }
+        {isAuthorized && (
+          <Fragment>
+            <Button onClick={() => this.deletePoll()} type="button" variant="raised" size="small" color="secondary">
+              Delete
+            </Button>
+          </Fragment>
+        )}
       </div>
     );
   }
