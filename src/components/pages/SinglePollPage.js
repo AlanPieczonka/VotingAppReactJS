@@ -1,17 +1,26 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-// import Button from 'material-ui/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Pie } from 'react-chartjs-2';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import purple from '@material-ui/core/colors/purple';
+
 
 class SinglePoll extends Component {
   state = {
     poll: {},
     isAuthorized: false,
     newOption: '',
+    optionToVote: '',
   }
 
   componentDidMount() {
@@ -24,20 +33,30 @@ class SinglePoll extends Component {
       .then((response) => {
         const poll = response.data[0];
         this.setState({ poll });
+        this.setState({ optionToVote: poll.options[0]._id });
         if (poll.userId === currentUserId) {
           this.setState({ isAuthorized: true });
         }
-        console.log(poll);
+      })
+      .catch((error) => {
+        if (error.response.statusText === 'Not Found') {
+          this.props.history.push('/not-found');
+        }
       });
   }
 
   handleChange = name => event => this.setState({ [name]: event.target.value });
 
-  vote = (id) => {
+  handleSelect = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+    console.log(this.state);
+  };
+
+  vote = () => {
     const API = axios.create({
       baseURL: 'http://localhost:3000',
     });
-    API.patch(`polls/${this.state.poll._id}/${id}/up`)
+    API.patch(`polls/${this.state.poll._id}/${this.state.optionToVote}/up`)
       .then(response => this.setState({ poll: response.data.poll }))
       .catch(error => console.error('There has been an error with voting', error));
   }
@@ -71,20 +90,29 @@ class SinglePoll extends Component {
   render() {
     const { isAuthorized } = this.state;
     const {
-      title, userId, _id, options,
+      title, options,
     } = this.state.poll;
     const { isAuthenticated } = this.props;
     let chart;
-
     let optionsDiv;
     if (this.state.poll.options) {
-      optionsDiv = this.state.poll.options.map((option, i) =>
-        (<div key={option._id}>
-          <h2>Option: {option.title} Votes: {option.votes}</h2>
-          <button onClick={() => this.vote(option._id)}>Vote</button>
-         </div>));
+      optionsDiv = (
+        <FormControl>
+          <InputLabel htmlFor="option-helper">Option</InputLabel>
+          <Select
+            value={this.state.optionToVote}
+            onChange={this.handleSelect}
+            input={<Input name="optionToVote" id="option-helper" />}
+          >
+            {this.state.poll.options.map((option, i) => (
+              <MenuItem key={option._id} value={option._id}>{option.title}</MenuItem>
+          ))}
+          </Select>
+          <FormHelperText>Option you want to vote on</FormHelperText>
+        </FormControl>
+      );
     } else {
-      optionsDiv = <h1>Working</h1>;
+      optionsDiv = <CircularProgress style={{ color: purple[500] }} thickness={7} />;
     }
 
     if (options) {
@@ -109,7 +137,7 @@ class SinglePoll extends Component {
       };
       chart = <Pie data={data} />;
     } else {
-      chart = <h1>Preparing your chart...</h1>;
+      chart = <CircularProgress color="secondary" />;
     }
     return (
       <div style={{ marginTop: '10px' }}>
@@ -120,35 +148,41 @@ class SinglePoll extends Component {
           {chart}
         </div>
         {optionsDiv}
+        <div style={{ marginTop: '20px' }}>
+          <Button onClick={this.vote} variant="raised" size="small" color="primary">
+              Vote
+          </Button>
+        </div>
         {
-          isAuthenticated && (
-            <Fragment>
-              <Typography variant="title" gutterBottom>
-          Add new option
-              </Typography>
-              <form onSubmit={this.addNewOption}>
-                <TextField
-                  id="new-option"
-                  label="New option"
-                  margin="normal"
-                  value={this.state.newOption}
-                  onChange={this.handleChange('newOption')}
-                />
-                <button type="submit">Add new option</button>
-              </form>
-              <Button variant="raised" size="small" color="primary">
-                      Share on Twitter
-              </Button>
-            </Fragment>
-          )
-        }
+            isAuthenticated && (
+              <Fragment>
+                <hr />
+                <Typography variant="title" gutterBottom>
+            Add new option
+                </Typography>
+                <form onSubmit={this.addNewOption}>
+                  <TextField
+                    id="new-option"
+                    label="New option"
+                    margin="normal"
+                    value={this.state.newOption}
+                    onChange={this.handleChange('newOption')}
+                  />
+                  <button type="submit">Add new option</button>
+                </form>
+                <Button variant="raised" size="small" color="primary">
+                        Share on Twitter
+                </Button>
+              </Fragment>
+            )
+          }
         {isAuthorized && (
-          <Fragment>
-            <Button onClick={() => this.deletePoll()} type="button" variant="raised" size="small" color="secondary">
-              Delete
-            </Button>
-          </Fragment>
-        )}
+        <Fragment>
+          <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
+                Delete
+          </Button>
+        </Fragment>
+          )}
       </div>
     );
   }
