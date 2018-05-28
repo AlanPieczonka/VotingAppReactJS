@@ -14,6 +14,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import purple from '@material-ui/core/colors/purple';
 
+const prepareChart = (options) => {
+  const labels = options.map(option => option.title);
+  const votes = options.map(option => option.votes);
+  const backgroundColor = ['#FF6384',
+    '#36A2EB',
+    '#FFCE56'];
+  const hoverBackgroundColor = [
+    '#FF6384',
+    '#36A2EB',
+    '#FFCE56',
+  ];
+  return {
+    labels,
+    datasets: [{
+      data: votes,
+      backgroundColor,
+      hoverBackgroundColor,
+    }],
+  };
+};
 
 class SinglePoll extends Component {
   state = {
@@ -93,7 +113,6 @@ class SinglePoll extends Component {
       title, options,
     } = this.state.poll;
     const { isAuthenticated } = this.props;
-    let chart;
     let optionsDiv;
     if (this.state.poll.options) {
       optionsDiv = (
@@ -106,7 +125,7 @@ class SinglePoll extends Component {
           >
             {this.state.poll.options.map((option, i) => (
               <MenuItem key={option._id} value={option._id}>{option.title}</MenuItem>
-          ))}
+            ))}
           </Select>
           <FormHelperText>Option you want to vote on</FormHelperText>
         </FormControl>
@@ -114,28 +133,10 @@ class SinglePoll extends Component {
     } else {
       optionsDiv = <CircularProgress style={{ color: purple[500] }} thickness={7} />;
     }
-
+    
+    let chart;
     if (options) {
-      // const chart = prepareChart(this.state.poll.options);
-      const labels = options.map(option => option.title);
-      const votes = options.map(option => option.votes);
-      const backgroundColor = ['#FF6384',
-        '#36A2EB',
-        '#FFCE56'];
-      const hoverBackgroundColor = [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56',
-      ];
-      const data = {
-        labels,
-        datasets: [{
-          data: votes,
-          backgroundColor,
-          hoverBackgroundColor,
-        }],
-      };
-      chart = <Pie data={data} />;
+      chart = <Pie data={prepareChart(this.state.poll.options)} />;
     } else {
       chart = <CircularProgress color="secondary" />;
     }
@@ -156,11 +157,10 @@ class SinglePoll extends Component {
         {
             isAuthenticated && (
               <Fragment>
-                <hr />
-                <Typography variant="title" gutterBottom>
-            Add new option
-                </Typography>
-                <form onSubmit={this.addNewOption}>
+                <Button variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
+                        Share on Twitter
+                </Button>
+                <form onSubmit={this.addNewOption} style={{ marginTop: '-20px' }}>
                   <TextField
                     id="new-option"
                     label="New option"
@@ -168,17 +168,18 @@ class SinglePoll extends Component {
                     value={this.state.newOption}
                     onChange={this.handleChange('newOption')}
                   />
-                  <button type="submit">Add new option</button>
+                  <br />
+                  <Button type="submit" variant="raised" size="small" color="primary">
+                  Add new option
+                  </Button>
                 </form>
-                <Button variant="raised" size="small" color="primary">
-                        Share on Twitter
-                </Button>
               </Fragment>
             )
           }
         {isAuthorized && (
         <Fragment>
-          <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
+          <hr />
+          <Button style={{ marginBottom: '10px' }} onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
                 Delete
           </Button>
         </Fragment>
