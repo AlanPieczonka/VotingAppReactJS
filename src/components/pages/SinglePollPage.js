@@ -13,27 +13,7 @@ import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import purple from '@material-ui/core/colors/purple';
-
-const prepareChart = (options) => {
-  const labels = options.map(option => option.title);
-  const votes = options.map(option => option.votes);
-  const backgroundColor = ['#FF6384',
-    '#36A2EB',
-    '#FFCE56'];
-  const hoverBackgroundColor = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-  ];
-  return {
-    labels,
-    datasets: [{
-      data: votes,
-      backgroundColor,
-      hoverBackgroundColor,
-    }],
-  };
-};
+import prepareChart from './../../utils/prepareChart';
 
 class SinglePoll extends Component {
   state = {
@@ -133,7 +113,6 @@ class SinglePoll extends Component {
     } else {
       optionsDiv = <CircularProgress style={{ color: purple[500] }} thickness={7} />;
     }
-    
     let chart;
     if (options) {
       chart = <Pie data={prepareChart(this.state.poll.options)} />;
@@ -160,7 +139,7 @@ class SinglePoll extends Component {
                 <Button variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
                         Share on Twitter
                 </Button>
-                <form onSubmit={this.addNewOption} style={{ marginTop: '-20px' }}>
+                <form onSubmit={this.addNewOption} style={{ marginTop: '-5px' }}>
                   <TextField
                     id="new-option"
                     label="New option"
