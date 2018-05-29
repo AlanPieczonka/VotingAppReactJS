@@ -1,15 +1,26 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { Pie } from 'react-chartjs-2';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import purple from '@material-ui/core/colors/purple';
+import prepareChart from './../../utils/prepareChart';
 
 class SinglePoll extends Component {
   state = {
     poll: {},
     isAuthorized: false,
     newOption: '',
+    optionToVote: '',
   }
 
   componentDidMount() {
@@ -22,19 +33,30 @@ class SinglePoll extends Component {
       .then((response) => {
         const poll = response.data[0];
         this.setState({ poll });
+        this.setState({ optionToVote: poll.options[0]._id });
         if (poll.userId === currentUserId) {
           this.setState({ isAuthorized: true });
+        }
+      })
+      .catch((error) => {
+        if (error.response.statusText === 'Not Found') {
+          this.props.history.push('/not-found');
         }
       });
   }
 
   handleChange = name => event => this.setState({ [name]: event.target.value });
 
-  vote = (id) => {
+  handleSelect = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+    console.log(this.state);
+  };
+
+  vote = () => {
     const API = axios.create({
       baseURL: 'http://localhost:3000',
     });
-    API.patch(`polls/${this.state.poll._id}/${id}/up`)
+    API.patch(`polls/${this.state.poll._id}/${this.state.optionToVote}/up`)
       .then(response => this.setState({ poll: response.data.poll }))
       .catch(error => console.error('There has been an error with voting', error));
   }
@@ -66,59 +88,81 @@ class SinglePoll extends Component {
   }
 
   render() {
-    let options;
-    if (this.state.poll.options) {
-      options = this.state.poll.options.map((option, i) =>
-        (<div key={option._id}>
-          <h2>Option: {option.title} Votes: {option.votes}</h2>
-          <button onClick={() => this.vote(option._id)}>Vote</button>
-         </div>));
-    } else {
-      options = <h1>Working</h1>;
-    }
     const { isAuthorized } = this.state;
-    const { title, userId, _id } = this.state.poll;
+    const {
+      title, options,
+    } = this.state.poll;
     const { isAuthenticated } = this.props;
+    let optionsDiv;
+    if (this.state.poll.options) {
+      optionsDiv = (
+        <FormControl>
+          <InputLabel htmlFor="option-helper">Option</InputLabel>
+          <Select
+            value={this.state.optionToVote}
+            onChange={this.handleSelect}
+            input={<Input name="optionToVote" id="option-helper" />}
+          >
+            {this.state.poll.options.map((option, i) => (
+              <MenuItem key={option._id} value={option._id}>{option.title}</MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>Option you want to vote on</FormHelperText>
+        </FormControl>
+      );
+    } else {
+      optionsDiv = <CircularProgress style={{ color: purple[500] }} thickness={7} />;
+    }
+    let chart;
+    if (options) {
+      chart = <Pie data={prepareChart(this.state.poll.options)} />;
+    } else {
+      chart = <CircularProgress color="secondary" />;
+    }
     return (
-      <div style={{marginTop: '10px'}}>
+      <div style={{ marginTop: '10px' }}>
         <Typography variant="title" gutterBottom>
           {title}
         </Typography>
-        <hr />
-        <h1 className="weight300">Single Poll</h1>
-        <h3>Poll ID: {this.props.match.params.poll_id}</h3>
-        <h4>Poll ID from state: {_id}</h4>
-        <h5>Title: {title}</h5>
-        <h5>UserID: {userId}</h5>
-        {options}
-        <h5>After options</h5>
-        <button>Share on Twitter</button>
-        {isAuthorized && (
-          <Fragment>
-            <h1>This is your poll, do you want to delete?</h1>
-            <Button onClick={() => this.deletePoll()} type="button" variant="raised" color="secondary">
-              Delete
-            </Button>
-          </Fragment>
-        )}
+        <div>
+          {chart}
+        </div>
+        {optionsDiv}
+        <div style={{ marginTop: '20px' }}>
+          <Button onClick={this.vote} variant="raised" size="small" color="primary">
+              Vote
+          </Button>
+        </div>
         {
-          isAuthenticated && (
-            <Fragment>
-              <hr />
-              <h1>Add new option</h1>
-              <form onSubmit={this.addNewOption}>
-                <TextField
-                  id="new-option"
-                  label="New option"
-                  margin="normal"
-                  value={this.state.newOption}
-                  onChange={this.handleChange('newOption')}
-                />
-                <button type="submit">Add new option</button>
-              </form>
-            </Fragment>
-          )
-        }
+            isAuthenticated && (
+              <Fragment>
+                <Button variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
+                        Share on Twitter
+                </Button>
+                <form onSubmit={this.addNewOption} style={{ marginTop: '-5px' }}>
+                  <TextField
+                    id="new-option"
+                    label="New option"
+                    margin="normal"
+                    value={this.state.newOption}
+                    onChange={this.handleChange('newOption')}
+                  />
+                  <br />
+                  <Button type="submit" variant="raised" size="small" color="primary">
+                  Add new option
+                  </Button>
+                </form>
+              </Fragment>
+            )
+          }
+        {isAuthorized && (
+        <Fragment>
+          <hr />
+          <Button style={{ marginBottom: '10px' }} onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
+                Delete
+          </Button>
+        </Fragment>
+          )}
       </div>
     );
   }
