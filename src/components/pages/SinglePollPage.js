@@ -49,6 +49,10 @@ class SinglePoll extends Component {
 
   handleSelect = event => this.setState({ [event.target.name]: event.target.value });
 
+  shareOnTwitter = () => {
+    window.open('https://twitter.com/intent/tweet?text=Hey, check out this cool poll!!!', '_blank');
+  }
+
   vote = () => {
     const API = axios.create({
       baseURL: 'http://localhost:3000',
@@ -133,7 +137,7 @@ class SinglePoll extends Component {
         {
             isAuthenticated && (
               <Fragment>
-                <Button variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
+                <Button onClick={this.shareOnTwitter} variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
                         Share on Twitter
                 </Button>
                 <form onSubmit={this.addNewOption} style={{ marginTop: '-5px' }}>
