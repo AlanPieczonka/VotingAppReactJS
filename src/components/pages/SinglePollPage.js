@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
@@ -15,7 +16,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import purple from '@material-ui/core/colors/purple';
 import prepareChart from './../../utils/prepareChart';
 
-class SinglePoll extends Component {
+
+class SinglePollPage extends Component {
   state = {
     poll: {},
     isAuthorized: false,
@@ -169,9 +171,21 @@ class SinglePoll extends Component {
   }
 }
 
+SinglePollPage.propTypes = {
+  currentUserId: PropTypes.string,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      poll_id: PropTypes.node,
+    }).isRequired,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
 const mapStateToProps = state => ({
   currentUserId: state.user.id,
   isAuthenticated: !!state.user.token,
 });
 
-export default connect(mapStateToProps)(SinglePoll);
+export default connect(mapStateToProps)(SinglePollPage);

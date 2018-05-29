@@ -25,7 +25,7 @@ class PollsList extends Component {
           API.get(this.props.endpoint).then(response => this.setState({ polls: response.data.polls }));
         }
         render() {
-          const { classes, endpoint, header } = this.props;
+          const { classes, header } = this.props;
           const polls = this.state.polls.map(poll =>
             (<div key={poll._id}>
               <Link to={`/polls/${poll._id}`} style={{ textDecoration: 'none' }}>
