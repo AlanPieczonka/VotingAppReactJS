@@ -11,10 +11,10 @@ const backgroundColor = [
   '#27ae60',
 ];
 
-
 export default (options) => {
   const labels = options.map(option => option.title);
-  const votes = options.map(option => option.votes);
+  const isEveryVoteZero = options.every(option => option.votes === 0);
+  const votes = isEveryVoteZero ? options.map(option => 1) : options.map(option => option.votes);
   return {
     labels,
     datasets: [{
