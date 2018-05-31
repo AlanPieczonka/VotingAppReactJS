@@ -8,6 +8,7 @@ const CreateTextField = ({
   type,
   fullWidth,
   meta: { touched, error },
+  ...rest
 }) => {
   const isError = !!error;
   return (
@@ -18,6 +19,7 @@ const CreateTextField = ({
       error={touched && isError}
       helperText={error}
       {...input}
+      {...rest}
     />
   );
 };
