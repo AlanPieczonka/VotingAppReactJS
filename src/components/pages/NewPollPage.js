@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import { Field, reduxForm } from 'redux-form';
+import validate from '../../validation/NewPollValidation';
+import CreateTextField from '../fields/CreateTextField';
 
 class NewPollPage extends Component {
   state = {
@@ -45,6 +49,8 @@ class NewPollPage extends Component {
   };
 
   _handleSubmit = (event) => {
+    console.log(event);
+
     event.preventDefault();
     if (this.state.options.length < 2) {
       return;
@@ -67,7 +73,6 @@ class NewPollPage extends Component {
       .catch((error) => {
         console.log('There has been an error with creating new poll');
         console.log(error);
-        debugger;
       });
   };
 
@@ -80,9 +85,10 @@ class NewPollPage extends Component {
       >
         <form onSubmit={this._handleSubmit}>
           <div>
-            <TextField
+            <Field
               required
               id="PollTitle"
+              name="title"
               label="Title"
               InputLabelProps={{
                 shrink: true,
@@ -90,7 +96,9 @@ class NewPollPage extends Component {
               placeholder="Is the Nintendo Switch the best console ever?"
               fullWidth
               margin="normal"
+              type="text"
               onChange={this.handleChange('title')}
+              component={CreateTextField}
             />
           </div>
           <div>
@@ -140,8 +148,14 @@ const styles = theme => ({
     padding: theme.spacing.unit / 2,
   },
   chip: {
-    margin: theme.spacing.unit / 2,
+    margin: theme.spacing.unit * 1.25,
   },
 });
 
-export default withStyles(styles)(NewPollPage);
+export default compose(
+  reduxForm({
+    form: 'NewPollPage',
+    validate,
+  }),
+  withStyles(styles),
+)(NewPollPage);
