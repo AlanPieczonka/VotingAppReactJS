@@ -22,7 +22,8 @@ class NewPollPage extends Component {
   handleChange = name => event => this.setState({ [name]: event.target.value });
 
   _handleKeyPress = (event) => {
-    if (event.key === 'Enter' && event.target.value !== '') {
+    const { value } = event.target;
+    if ((event.key === 'Enter' && value !== '') && (value.length >= 1 && value.length <= 50)) {
       const { options } = this.state;
       let lastKey;
       if (options.length > 0) {
@@ -31,7 +32,7 @@ class NewPollPage extends Component {
         lastKey = -1;
       }
       this.setState({
-        options: [...options, { key: lastKey + 1, title: event.target.value }],
+        options: [...options, { key: lastKey + 1, title: value }],
       });
       event.target.value = '';
       event.preventDefault();
