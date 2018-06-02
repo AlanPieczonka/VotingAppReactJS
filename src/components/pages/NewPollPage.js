@@ -78,7 +78,7 @@ class NewPollPage extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, pristine, submitting } = this.props;
     return (
       <div style={{
         padding: '30px 50px',
@@ -132,7 +132,7 @@ class NewPollPage extends Component {
             </Paper>
           </div>
         }
-          <Button type="submit" variant="raised" color="primary">
+          <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
              Create
           </Button>
         </form>
