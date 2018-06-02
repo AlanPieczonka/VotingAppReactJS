@@ -1,4 +1,6 @@
 import React from 'react';
+import { compose } from 'redux';
+import { withStyles } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,9 +9,9 @@ import validate from './../../validation/UserValidation';
 import CreateTextField from '../fields/CreateTextField';
 
 const LoginForm = ({
-  handleSubmit, reset, pristine, submitting,
+  handleSubmit, reset, pristine, submitting, classes,
 }) => (
-  <div style={{ border: '2px solid black', padding: '5%' }}>
+  <div className={classes.container}>
     <h2 className="weight300">This is LoginForm</h2>
     <div>
       <form onSubmit={handleSubmit}>
@@ -19,7 +21,7 @@ const LoginForm = ({
           label="Email"
           component={CreateTextField}
         />
-        <div style={{ margin: '20px 0' }}>
+        <div className={classes.field}>
           <Field
             name="password"
             type="password"
@@ -27,13 +29,17 @@ const LoginForm = ({
             component={CreateTextField}
           />
         </div>
-        <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
+        <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting} className={classes.button}>
                   Login
         </Button>
-        <Button type="button" variant="raised" color="secondary" disabled={pristine || submitting} onClick={reset}>
+        <Button type="button" variant="raised" color="secondary" disabled={pristine || submitting} onClick={reset} className={classes.button}>
                   Clear values
         </Button>
-        <p><Link to="/join" className="link--black">Never been to Voting App?</Link></p>
+        <div className={classes.field}>
+          <Button type="link" color="primary">
+            <Link to="/login" className="link--black">Already a member?</Link>
+          </Button>
+        </div>
       </form>
     </div>
   </div>
@@ -44,9 +50,30 @@ LoginForm.propTypes = {
   reset: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default reduxForm({
-  form: 'LoginForm',
-  validate,
-})(LoginForm);
+const styles = () => ({
+  container: {
+    padding: '5%',
+  },
+  field: {
+    margin: '20px 0',
+  },
+  button: {
+    margin: '0 5px !important',
+  },
+});
+
+export default compose(
+  reduxForm({
+    form: 'LoginForm',
+    validate,
+  }),
+  withStyles(styles),
+)(LoginForm);
+
+// export default reduxForm({
+//   form: 'LoginForm',
+//   validate,
+// })(LoginForm);
