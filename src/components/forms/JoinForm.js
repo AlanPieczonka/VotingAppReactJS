@@ -12,7 +12,7 @@ const JoinForm = ({
   handleSubmit, reset, pristine, submitting, classes,
 }) => (
   <div className={classes.container}>
-    <h2 className="weight300">This is JoinForm</h2>
+    <h2 className="weight300">Join the community!!!</h2>
     <div>
       <form onSubmit={handleSubmit}>
         <Field
