@@ -12,7 +12,7 @@ const LoginForm = ({
   handleSubmit, reset, pristine, submitting, classes,
 }) => (
   <div className={classes.container}>
-    <h2 className="weight300">This is LoginForm</h2>
+    <h2 className="weight300">Login</h2>
     <div>
       <form onSubmit={handleSubmit}>
         <Field
