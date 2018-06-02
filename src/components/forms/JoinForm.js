@@ -9,7 +9,7 @@ import validate from './../../validation/UserValidation';
 import CreateTextField from '../fields/CreateTextField';
 
 const JoinForm = ({
-  handleSubmit, reset, pristine, submitting, classes
+  handleSubmit, reset, pristine, submitting, classes,
 }) => (
   <div className={classes.container}>
     <h2 className="weight300">This is JoinForm</h2>
@@ -43,7 +43,11 @@ const JoinForm = ({
         <Button type="button" variant="raised" color="secondary" disabled={pristine || submitting} onClick={reset}>
                   Clear values
         </Button>
-        <p><Link to="/login" className="link--black">Already a member?</Link></p>
+        <div className={classes.field}>
+          <Button type="link" color="primary">
+            <Link to="/login" className="link--black">Already a member?</Link>
+          </Button>
+        </div>
       </form>
     </div>
   </div>
@@ -59,7 +63,6 @@ JoinForm.propTypes = {
 
 const styles = () => ({
   container: {
-    border: '2px solid black',
     padding: '5%',
   },
   field: {
