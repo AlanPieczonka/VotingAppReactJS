@@ -57,7 +57,7 @@ JoinForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const styles = theme => ({
+const styles = () => ({
   container: {
     border: '2px solid black',
     padding: '5%',
