@@ -1,4 +1,6 @@
 import React from 'react';
+import { compose } from 'redux';
+import { withStyles } from '@material-ui/core/styles';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,9 +9,9 @@ import validate from './../../validation/UserValidation';
 import CreateTextField from '../fields/CreateTextField';
 
 const JoinForm = ({
-  handleSubmit, reset, pristine, submitting,
+  handleSubmit, reset, pristine, submitting, classes
 }) => (
-  <div style={{ border: '2px solid black', padding: '5%' }}>
+  <div className={classes.container}>
     <h2 className="weight300">This is JoinForm</h2>
     <div>
       <form onSubmit={handleSubmit}>
@@ -19,7 +21,7 @@ const JoinForm = ({
           label="Email"
           component={CreateTextField}
         />
-        <div style={{ margin: '20px 0' }}>
+        <div className={classes.field}>
           <Field
             name="password"
             type="password"
@@ -27,11 +29,11 @@ const JoinForm = ({
             component={CreateTextField}
           />
         </div>
-        <div style={{ margin: '20px 0' }}>
+        <div className={classes.field}>
           <Field
             name="passwordConfirmation"
             type="password"
-            label="Password"
+            label="Password confirmation"
             component={CreateTextField}
           />
         </div>
@@ -52,9 +54,24 @@ JoinForm.propTypes = {
   reset: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default reduxForm({
-  form: 'JoinForm',
-  validate,
-})(JoinForm);
+const styles = theme => ({
+  container: {
+    border: '2px solid black',
+    padding: '5%',
+  },
+  field: {
+    margin: '20px 0',
+  },
+});
+
+export default compose(
+  reduxForm({
+    form: 'JoinForm',
+    validate,
+  }),
+  withStyles(styles),
+)(JoinForm);
+
