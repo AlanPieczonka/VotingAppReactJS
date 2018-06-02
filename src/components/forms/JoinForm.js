@@ -37,10 +37,10 @@ const JoinForm = ({
             component={CreateTextField}
           />
         </div>
-        <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
+        <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting} className={classes.button}>
                   Join
         </Button>
-        <Button type="button" variant="raised" color="secondary" disabled={pristine || submitting} onClick={reset}>
+        <Button type="button" variant="raised" color="secondary" disabled={pristine || submitting} onClick={reset} className={classes.button}>
                   Clear values
         </Button>
         <div className={classes.field}>
@@ -67,6 +67,9 @@ const styles = () => ({
   },
   field: {
     margin: '20px 0',
+  },
+  button: {
+    margin: '0 5px !important',
   },
 });
 
