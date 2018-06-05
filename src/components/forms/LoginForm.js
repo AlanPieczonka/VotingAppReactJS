@@ -35,11 +35,6 @@ const LoginForm = ({
         <Button type="button" variant="raised" color="secondary" disabled={pristine || submitting} onClick={reset} className={classes.button}>
                   Clear values
         </Button>
-        <div className={classes.field}>
-          <Button type="link" color="primary">
-            <Link to="/login" className="link--black">Already a member?</Link>
-          </Button>
-        </div>
       </form>
     </div>
   </div>
