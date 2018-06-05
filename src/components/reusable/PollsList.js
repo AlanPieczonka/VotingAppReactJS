@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class PollsList extends Component {
         state = {
@@ -27,12 +28,12 @@ class PollsList extends Component {
                   </Typography>
                 </Paper>
               </Link>
-             </div>));
+             </div>)) || <CircularProgress color="secondary" />;
           return (
             <div className={classes.root}>
               <h1>{header}</h1>
               <List component="nav">
-                {polls}
+                {polls.length > 0 ? (polls) : <CircularProgress color="secondary" />}
               </List>
             </div>
           );
