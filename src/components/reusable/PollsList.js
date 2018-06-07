@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
@@ -29,7 +28,7 @@ class PollsList extends Component {
         render() {
           const { classes, header } = this.props;
           const { error, polls } = this.state;
-          const mappedPolls = this.state.polls.map(poll =>
+          const mappedPolls = polls.map(poll =>
             (<div key={poll._id}>
               <Link to={`/polls/${poll._id}`} style={{ textDecoration: 'none' }}>
                 <Paper className={classes.root} elevation={4}>
