@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 class PollsList extends Component {
         state = {
           polls: [],
-          errorMessage: null,
+          error: {},
         }
         componentDidMount() {
           const API = axios.create({
@@ -19,17 +19,17 @@ class PollsList extends Component {
           API.get(this.props.endpoint)
             .then(response => this.setState({ polls: response.data.polls }))
             .catch((error) => {
-              if (error.response.data.error.message) {
-                this.setState({ errorMessage: error.response.data.error.message });
+              if (error.response) {
+                this.setState({ error: error.response.data.error.message });
               } else {
-                this.setState({ errorMessage: 'There has been an error ' });
+                this.setState({ error })
               }
             });
         }
         render() {
           const { classes, header } = this.props;
-          const { errorMessage } = this.state;
-          const polls = this.state.polls.map(poll =>
+          const { error, polls } = this.state;
+          const mappedPolls = this.state.polls.map(poll =>
             (<div key={poll._id}>
               <Link to={`/polls/${poll._id}`} style={{ textDecoration: 'none' }}>
                 <Paper className={classes.root} elevation={4}>
@@ -39,20 +39,19 @@ class PollsList extends Component {
                 </Paper>
               </Link>
             </div>));
+
+          let pollContent = <CircularProgress color="secondary" />;
+
+          if (Object.keys(error))
+            pollContent = <h1>{error.message}</h1>
+          if (polls.length > 0)
+            pollContent = mappedPolls
+
           return (
             <div className={classes.root}>
               <h1>{header}</h1>
-            {
-              (() => {
-                  if (errorMessage !== null)
-                      return <h1>{errorMessage}</h1>
-                  if (polls.length > 0)
-                      return {polls}
-                  else 
-                      return <CircularProgress color="secondary" />
-              })()
-            }
-</div>
+              {pollContent}
+            </div>
           );
         }
 }
