@@ -19,9 +19,13 @@ class PollsList extends Component {
             .then(response => this.setState({ polls: response.data.polls }))
             .catch((error) => {
               if (error.response) {
-                this.setState({ error: error.response.data.error.message });
+                this.setState({
+                  error: {
+                    message: error.response.data.error.message,
+                  },
+                });
               } else {
-                this.setState({ error })
+                this.setState({ error });
               }
             });
         }
@@ -37,14 +41,12 @@ class PollsList extends Component {
                   </Typography>
                 </Paper>
               </Link>
-            </div>));
+             </div>));
 
           let pollContent = <CircularProgress color="secondary" />;
 
-          if (Object.keys(error))
-            pollContent = <h1>{error.message}</h1>
-          if (polls.length > 0)
-            pollContent = mappedPolls
+          if (Object.keys(error)) { pollContent = <h1>{error.message}</h1>; }
+          if (polls.length > 0) { pollContent = mappedPolls; }
 
           return (
             <div className={classes.root}>
