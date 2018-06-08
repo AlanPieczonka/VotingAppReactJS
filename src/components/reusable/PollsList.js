@@ -43,14 +43,21 @@ class PollsList extends Component {
               </Link>
              </div>));
 
-          let pollContent = <CircularProgress color="secondary" />;
+          let pollContent = <CircularProgress color="secondary" className={classes.progress} />;
 
-          if (Object.keys(error)) { pollContent = <h1>{error.message}</h1>; }
+          if (Object.keys(error)) {
+            pollContent = (
+              <Typography variant="subheading" gutterBottom>
+                {error.message}
+              </Typography>);
+          }
           if (polls.length > 0) { pollContent = mappedPolls; }
 
           return (
             <div className={classes.root}>
-              <h1>{header}</h1>
+              <Typography variant="title" gutterBottom>
+                  {header}
+              </Typography>
               {pollContent}
             </div>
           );
@@ -62,6 +69,10 @@ const styles = theme => ({
     paddingTop: 16,
     paddingBottom: 16,
     marginTop: theme.spacing.unit * 3,
+  }),
+  progress: theme.mixins.gutters({
+    paddingTop: 40,
+    marginTop: 10,
   }),
 });
 
