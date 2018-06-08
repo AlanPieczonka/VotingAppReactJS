@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import validate from './../../validation/UserValidation';
