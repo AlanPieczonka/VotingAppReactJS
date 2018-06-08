@@ -9,10 +9,11 @@ import { showSnack } from '../../actions/snackbar';
 import { logout } from '../../actions/auth';
 
 const LINKS = [
-  { name: 'About', to: '/about', type: 'public' },
-  { name: 'Join', to: '/join', type: 'guest' },
   { name: 'Login', to: '/login', type: 'guest' },
+  { name: 'Join', to: '/join', type: 'guest' },
+  { name: 'My Polls', to: '/user/polls', type: 'private' },
   { name: 'New Poll', to: '/polls/new', type: 'private' },
+  { name: 'About', to: '/about', type: 'public' },
   { name: 'Logout', to: '/', type: 'logout' },
 ];
 
@@ -30,15 +31,8 @@ class DropdownComponent extends Component {
 	};
 
 	render() {
-	  const { userEmail, isAuthenticated } = this.props;
+	  const { isAuthenticated } = this.props;
 	  const { anchorEl } = this.state;
-	  const links = [
-	    { name: 'About', to: '/about', type: 'public' },
-	    { name: 'Join', to: '/join', type: 'guest' },
-	    { name: 'Login', to: '/login', type: 'guest' },
-	    { name: 'New Poll', to: '/polls/new', type: 'private' },
-	    { name: 'Logout', to: '/', type: 'logout' },
-	  ];
 	  return (
   <div>
     <IconButton
@@ -61,7 +55,6 @@ class DropdownComponent extends Component {
             },
           }}
     >
-      {userEmail && <DropdownItem link={{ to: '/user/polls', name: userEmail }} handleClose={this.handleClose} />}
       {LINKS.map((link) => {
 						switch (link.type) {
               case 'public':
@@ -94,12 +87,10 @@ class DropdownComponent extends Component {
 
 DropdownComponent.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  userEmail: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: !!state.user.token,
-  userEmail: state.user.email,
 });
 
 export default connect(mapStateToProps, { logout, showSnack })(DropdownComponent);
