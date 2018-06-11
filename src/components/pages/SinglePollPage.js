@@ -125,8 +125,8 @@ class SinglePollPage extends Component {
     }
     return (
       <div style={{ padding: '18px' }}>
-        <Grid container spacing={24}>
-          <Grid item xs={12} md={3} lg={2}>
+        <Grid container spacing={24} justify="center">
+          <Grid item xs={8} md={3} xl={2}>
             <Paper elevation={4}>
               { isAuthenticated && (
                 <Fragment>
@@ -169,7 +169,7 @@ class SinglePollPage extends Component {
             }
             </Paper>
           </Grid>
-          <Grid item xs={12} md={9} lg={10}>
+          <Grid item xs={12} md={8} xl={8}>
             <Paper elevation={4}>
               <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
                 <Grid container justify="space-between" alignItems="center">
