@@ -15,7 +15,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import purple from '@material-ui/core/colors/purple';
 import prepareChart from './../../utils/prepareChart';
-
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 class SinglePollPage extends Component {
   state = {
@@ -91,22 +92,22 @@ class SinglePollPage extends Component {
   }
 
   render() {
-    const { isAuthorized } = this.state;
+    const { isAuthorized, newOption, optionToVote } = this.state;
     const {
       title, options,
     } = this.state.poll;
     const { isAuthenticated } = this.props;
     let optionsDiv;
-    if (this.state.poll.options) {
+    if (options) {
       optionsDiv = (
         <FormControl>
           <InputLabel htmlFor="option-helper">Option</InputLabel>
           <Select
-            value={this.state.optionToVote}
+            value={optionToVote}
             onChange={this.handleSelect}
-            input={<Input name="optionToVote" id="option-helper" />}
+            input={<Input name="optionToVote" id="option-helper" />} 
           >
-            {this.state.poll.options.map((option, i) => (
+            {options.map((option, i) => (
               <MenuItem key={option._id} value={option._id}>{option.title}</MenuItem>
             ))}
           </Select>
@@ -118,54 +119,87 @@ class SinglePollPage extends Component {
     }
     let chart;
     if (options) {
-      chart = <Pie data={prepareChart(this.state.poll.options)} />;
+      chart = <Pie data={prepareChart(options)} />;
     } else {
       chart = <CircularProgress color="secondary" />;
     }
     return (
-      <div style={{ marginTop: '10px' }}>
-        <Typography variant="title" gutterBottom>
-          {title}
-        </Typography>
-        <div>
-          {chart}
-        </div>
-        {optionsDiv}
-        <div style={{ marginTop: '20px' }}>
-          <Button onClick={this.vote} variant="raised" size="small" color="primary">
-              Vote
-          </Button>
-        </div>
-        {
-            isAuthenticated && (
+      <div style={{ padding: '18px' }}>
+        <Grid container spacing={24}>
+          <Grid item xs={12} md={3} lg={2}>
+            <Paper elevation={4}>
+              { isAuthenticated && (
+                <Fragment>
+                  <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
+                    Missing options?
+                  </div>
+                  <div style={{ padding: '0 18px 36px 18px' }}>
+                    <form onSubmit={this.addNewOption}>
+                      <TextField
+                        id="new-option"
+                        label="New option"
+                        margin="normal"
+                        value={newOption}
+                        onChange={this.handleChange('newOption')}
+                      />
+                      <br />
+                      <Button type="submit" variant="raised" size="small" color="primary">
+                        Add new option
+                      </Button>
+                    </form>
+                  </div>
+                </Fragment>
+                )
+              }
+            </Paper>
+            <Paper elevation={4}>
+            { isAuthorized && (
+                
               <Fragment>
-                <Button onClick={this.shareOnTwitter} variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
-                        Share on Twitter
-                </Button>
-                <form onSubmit={this.addNewOption} style={{ marginTop: '-5px' }}>
-                  <TextField
-                    id="new-option"
-                    label="New option"
-                    margin="normal"
-                    value={this.state.newOption}
-                    onChange={this.handleChange('newOption')}
-                  />
-                  <br />
-                  <Button type="submit" variant="raised" size="small" color="primary">
-                  Add new option
-                  </Button>
-                </form>
+                <div style={{ width: '100%', color: 'white', backgroundColor: '#F44336', padding: '18px', marginTop: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
+                  Danger Zone
+                </div>
+                <div style={{ padding: '18px' }}>
+                    <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
+                        Delete Poll
+                    </Button>
+                </div>
               </Fragment>
-            )
-          }
-        {isAuthorized && (
-        <Fragment>
-          <hr />
-          <Button style={{ marginBottom: '10px' }} onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
-                Delete
-          </Button>
-        </Fragment>
-          )}
+              )
+            }
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={9} lg={10}>
+            <Paper elevation={4}>
+              <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
+                <Grid container justify="space-between" alignItems="center">
+                  <Grid item>
+                    <Typography variant="title" color="inherit">
+                      {title}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    { isAuthenticated && (
+                      <Button onClick={this.shareOnTwitter} variant="raised" size="small" color="primary">
+                        Share on Twitter
+                      </Button>
+                      )
+                    }
+                  </Grid>
+                </Grid>
+              </div>
+              {chart}
+              <div style={{ padding: '24px' }}>
+                {optionsDiv}
+                <div style={{ marginTop: '20px' }}>
+                  <Button onClick={this.vote} variant="raised" size="small" color="primary">
+                      Vote
+                  </Button>
+                </div>
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }
