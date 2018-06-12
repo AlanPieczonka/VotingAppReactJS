@@ -6,14 +6,14 @@ import Paper from '@material-ui/core/Paper';
 
 export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
   return (
-    <Grid item xs={4} md={3} xl={2}>
+    <Grid item xs={12} sm={4} md={3} xl={2}>
       { isAuthenticated && (
           <Paper elevation={4}>
             <Fragment>
-              <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
+              <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '16px', boxSizing: 'border-box', textAlign: 'left'}}>
                 Missing options?
               </div>
-              <div style={{ padding: '0 18px 36px 18px' }}>
+              <div style={{ padding: '0 16px 32px 16px' }}>
                 <form onSubmit={this.addNewOption}>
                   <TextField
                     id="new-option"

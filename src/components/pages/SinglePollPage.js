@@ -128,22 +128,10 @@ class SinglePollPage extends Component {
         <Grid container spacing={24} justify="center">
           <Grid item xs={12} md={8} xl={8}>
             <Paper elevation={4}>
-              <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
-                <Grid container justify="space-between" alignItems="center">
-                  <Grid item>
-                    <Typography variant="title" color="inherit">
-                      {title}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    { isAuthenticated && (
-                      <Button onClick={this.shareOnTwitter} variant="raised" size="small" color="primary">
-                        Share on Twitter
-                      </Button>
-                      )
-                    }
-                  </Grid>
-                </Grid>
+              <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '16px', boxSizing: 'border-box', textAlign: 'left'}}>
+                <Typography variant="headline" color="inherit" noWrap="true">
+                  {title}
+                </Typography>
               </div>
               {chart}
               <div style={{ padding: '24px' }}>
@@ -155,6 +143,20 @@ class SinglePollPage extends Component {
                 </div>
               </div>
             </Paper>
+            { isAuthenticated && (
+                <Paper style={{marginTop: '16px', padding: '16px'}}>
+                  <Button 
+                  onClick={this.shareOnTwitter} 
+                  variant="raised" 
+                  size="small"
+                  color="primary"
+                  style={{backgroundColor: 'rgb(8,160,233)'}}
+                  >
+                    Share on Twitter
+                  </Button>
+                </Paper>
+              )
+            }
           </Grid>
           { 
             (isAuthorized || isAuthenticated) 
