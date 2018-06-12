@@ -1,8 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Pie } from 'react-chartjs-2';
 import Button from '@material-ui/core/Button';
@@ -17,6 +16,7 @@ import purple from '@material-ui/core/colors/purple';
 import prepareChart from './../../utils/prepareChart';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import RightPanel from './polls/RightPanel';
 
 class SinglePollPage extends Component {
   state = {
@@ -126,49 +126,6 @@ class SinglePollPage extends Component {
     return (
       <div style={{ padding: '18px' }}>
         <Grid container spacing={24} justify="center">
-          <Grid item xs={8} md={3} xl={2}>
-            <Paper elevation={4}>
-              { isAuthenticated && (
-                <Fragment>
-                  <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
-                    Missing options?
-                  </div>
-                  <div style={{ padding: '0 18px 36px 18px' }}>
-                    <form onSubmit={this.addNewOption}>
-                      <TextField
-                        id="new-option"
-                        label="New option"
-                        margin="normal"
-                        value={newOption}
-                        onChange={this.handleChange('newOption')}
-                      />
-                      <br />
-                      <Button type="submit" variant="raised" size="small" color="primary">
-                        Add new option
-                      </Button>
-                    </form>
-                  </div>
-                </Fragment>
-                )
-              }
-            </Paper>
-            <Paper elevation={4}>
-            { isAuthorized && (
-                
-              <Fragment>
-                <div style={{ width: '100%', color: 'white', backgroundColor: '#F44336', padding: '18px', marginTop: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
-                  Danger Zone
-                </div>
-                <div style={{ padding: '18px' }}>
-                    <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
-                        Delete Poll
-                    </Button>
-                </div>
-              </Fragment>
-              )
-            }
-            </Paper>
-          </Grid>
           <Grid item xs={12} md={8} xl={8}>
             <Paper elevation={4}>
               <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
@@ -199,6 +156,16 @@ class SinglePollPage extends Component {
               </div>
             </Paper>
           </Grid>
+          { 
+            (isAuthorized || isAuthenticated) 
+            &&
+            <RightPanel 
+              isAuthenticated={isAuthenticated}
+              isAuthorized={isAuthorized}
+              handleChange={this.handleChange}
+              newOption={newOption}
+            />
+          }
         </Grid>
       </div>
     );
