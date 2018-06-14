@@ -17,6 +17,8 @@ import prepareChart from './../../utils/prepareChart';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import RightPanel from './polls/RightPanel';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
 
 class SinglePollPage extends Component {
   state = {
@@ -130,6 +132,9 @@ class SinglePollPage extends Component {
             <Paper elevation={4}>
               <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '16px', boxSizing: 'border-box', textAlign: 'left'}}>
                 <Typography variant="headline" color="inherit" noWrap>
+                  <FontAwesomeIcon 
+                  icon={faUsers} 
+                  style={{marginRight: '12px'}}/>
                   {title}
                 </Typography>
               </div>
