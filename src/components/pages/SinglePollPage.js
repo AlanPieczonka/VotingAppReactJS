@@ -157,6 +157,9 @@ class SinglePollPage extends Component {
               isAuthorized={isAuthorized}
               handleChange={this.handleChange}
               newOption={newOption}
+              addNewOption={this.addNewOption}
+              shareOnTwitter={this.shareOnTwitter}
+              deletePoll={this.deletePoll}
             />
           }
         </Grid>

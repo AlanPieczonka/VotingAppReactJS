@@ -7,7 +7,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faPencil from '@fortawesome/fontawesome-free-solid/faPencilAlt'
 import faTrash from '@fortawesome/fontawesome-free-solid/faTrashAlt';
 
-export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
+export default ({ isAuthenticated, isAuthorized, newOption, handleChange, shareOnTwitter, deletePoll, addNewOption }) => {
   return (
     <Grid item xs={12} sm={4} md={3} xl={2}>
       { isAuthenticated && (
@@ -16,7 +16,7 @@ export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
               Missing options?
             </div>
             <div style={{ padding: '0 16px 32px 16px' }}>
-              <form onSubmit={this.addNewOption}>
+              <form onSubmit={addNewOption}>
                 <TextField
                   id="new-option"
                   label="New option"
@@ -42,7 +42,7 @@ export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
             </div>
             <div style={{ padding: '18px' }}>
               <Button 
-              onClick={this.shareOnTwitter} 
+              onClick={shareOnTwitter} 
               variant="raised" 
               size="small"
               color="primary"
@@ -63,7 +63,7 @@ export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
               Danger Zone
             </div>
             <div style={{ padding: '18px' }}>
-                <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
+                <Button onClick={deletePoll} type="button" variant="raised" size="small" color="secondary">
                   <FontAwesomeIcon 
                     icon={faTrash}
                     style={{marginRight: '6px'}}/>
