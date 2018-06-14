@@ -17,6 +17,7 @@ import prepareChart from './../../utils/prepareChart';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import RightPanel from './polls/RightPanel';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class SinglePollPage extends Component {
   state = {
@@ -126,10 +127,10 @@ class SinglePollPage extends Component {
     return (
       <div style={{ padding: '18px' }}>
         <Grid container spacing={24} justify="center">
-          <Grid item xs={12} md={8} xl={8}>
+          <Grid item xs={12} sm={8}>
             <Paper elevation={4}>
               <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '16px', boxSizing: 'border-box', textAlign: 'left'}}>
-                <Typography variant="headline" color="inherit" noWrap="true">
+                <Typography variant="headline" color="inherit" noWrap>
                   {title}
                 </Typography>
               </div>
@@ -138,7 +139,7 @@ class SinglePollPage extends Component {
                 {optionsDiv}
                 <div style={{ marginTop: '20px' }}>
                   <Button onClick={this.vote} variant="raised" size="small" color="primary">
-                      Vote
+                    Vote
                   </Button>
                 </div>
               </div>
@@ -152,6 +153,9 @@ class SinglePollPage extends Component {
                   color="primary"
                   style={{backgroundColor: 'rgb(8,160,233)'}}
                   >
+                    <FontAwesomeIcon 
+                    icon={['fab', 'twitter']} 
+                    style={{marginRight: '6px'}}/>
                     Share on Twitter
                   </Button>
                 </Paper>
