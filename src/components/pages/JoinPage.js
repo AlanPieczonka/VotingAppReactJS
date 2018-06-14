@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import JoinForm from '../forms/JoinForm';
 import { signup } from '../../actions/join';
 import { showSnack } from '../../actions/snackbar';
+import Grid from '@material-ui/core/Grid'
 
 const JoinPage = (props) => {
   const handleSignIn = (values) => {
@@ -21,11 +22,13 @@ const JoinPage = (props) => {
       });
   };
   return (
-    <Fragment>
-      <JoinForm
-        onSubmit={handleSignIn}
-      />
-    </Fragment>
+    <Grid container justify="center">
+      <Grid item xs={12} md={8} lg={6}>
+        <JoinForm
+          onSubmit={handleSignIn}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
