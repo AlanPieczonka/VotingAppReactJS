@@ -13,8 +13,8 @@ const backgroundColor = [
 
 export default (options) => {
   const labels = options.map(option => option.title);
-  const isEveryVoteZero = options.every(option => option.votes === 0);
-  const votes = isEveryVoteZero ? options.map(option => 1) : options.map(option => option.votes);
+  const isEveryVoteZero = options.every(option => option.votes.length === 0);
+  const votes = isEveryVoteZero ? options.map(option => 1) : options.map(option => option.votes.length);
   return {
     labels,
     datasets: [{

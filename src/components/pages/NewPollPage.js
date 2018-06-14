@@ -9,6 +9,9 @@ import axios from 'axios';
 import { Field, reduxForm } from 'redux-form';
 import validate from '../../validation/NewPollValidation';
 import CreateTextField from '../fields/CreateTextField';
+import Grid from '@material-ui/core/Grid'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
 
 class NewPollPage extends Component {
   state = {
@@ -85,56 +88,63 @@ class NewPollPage extends Component {
       }}
       >
         <form onSubmit={this._handleSubmit}>
-          <div>
-            <Field
-              required
-              id="PollTitle"
-              name="title"
-              label="Title"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder="Is the Nintendo Switch the best console ever?"
-              fullWidth
-              margin="normal"
-              type="text"
-              onChange={this.handleChange('title')}
-              component={CreateTextField}
-            />
-          </div>
-          <div>
-            <TextField
-              id="NewPollOption"
-              label="New Option (click Enter)"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder="Yes!"
-              fullWidth
-              margin="normal"
-              onKeyPress={this._handleKeyPress}
-            />
-          </div>
-          {this.state.options.length > 0 &&
-          <div style={{
-            margin: '20px 0px',
-          }}
-          >
-            <Paper className={classes.root}>
-              {this.state.options.map(data => (
-                <Chip
-                  key={data.key}
-                  label={data.title}
-                  onDelete={this._handleDelete(data)}
-                  className={classes.chip}
+          <Grid container justify="center">
+            <Grid item xs={12} md={8} lg={6}>
+              <div>
+                <Field
+                  required
+                  id="PollTitle"
+                  name="title"
+                  label="Title"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder="Is the Nintendo Switch the best console ever?"
+                  fullWidth
+                  margin="normal"
+                  type="text"
+                  onChange={this.handleChange('title')}
+                  component={CreateTextField}
                 />
-              ))}
-            </Paper>
-          </div>
-        }
-          <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
-             Create
-          </Button>
+              </div>
+              <div>
+                <TextField
+                  id="NewPollOption"
+                  label="New Option (click Enter)"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder="Yes!"
+                  fullWidth
+                  margin="normal"
+                  onKeyPress={this._handleKeyPress}
+                />
+              </div>
+              {this.state.options.length > 0 &&
+              <div style={{
+                margin: '20px 0px',
+              }}
+              >
+                <Paper className={classes.root}>
+                  {this.state.options.map(data => (
+                    <Chip
+                      key={data.key}
+                      label={data.title}
+                      onDelete={this._handleDelete(data)}
+                      className={classes.chip}
+                    />
+                  ))}
+                </Paper>
+              </div>
+            }
+              <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
+                <FontAwesomeIcon 
+                icon={faPlus}
+                style={{marginRight: '6px'}} />
+                Create
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </div>
     );

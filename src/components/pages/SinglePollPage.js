@@ -1,8 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Pie } from 'react-chartjs-2';
 import Button from '@material-ui/core/Button';
@@ -15,7 +14,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import purple from '@material-ui/core/colors/purple';
 import prepareChart from './../../utils/prepareChart';
-
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import RightPanel from './polls/RightPanel';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
 
 class SinglePollPage extends Component {
   state = {
@@ -91,22 +94,22 @@ class SinglePollPage extends Component {
   }
 
   render() {
-    const { isAuthorized } = this.state;
+    const { isAuthorized, newOption, optionToVote } = this.state;
     const {
       title, options,
     } = this.state.poll;
     const { isAuthenticated } = this.props;
     let optionsDiv;
-    if (this.state.poll.options) {
+    if (options) {
       optionsDiv = (
         <FormControl>
           <InputLabel htmlFor="option-helper">Option</InputLabel>
           <Select
-            value={this.state.optionToVote}
+            value={optionToVote}
             onChange={this.handleSelect}
-            input={<Input name="optionToVote" id="option-helper" />}
+            input={<Input name="optionToVote" id="option-helper" />} 
           >
-            {this.state.poll.options.map((option, i) => (
+            {options.map((option, i) => (
               <MenuItem key={option._id} value={option._id}>{option.title}</MenuItem>
             ))}
           </Select>
@@ -118,54 +121,48 @@ class SinglePollPage extends Component {
     }
     let chart;
     if (options) {
-      chart = <Pie data={prepareChart(this.state.poll.options)} />;
+      chart = <Pie data={prepareChart(options)} />;
     } else {
       chart = <CircularProgress color="secondary" />;
     }
     return (
-      <div style={{ marginTop: '10px' }}>
-        <Typography variant="title" gutterBottom>
-          {title}
-        </Typography>
-        <div>
-          {chart}
-        </div>
-        {optionsDiv}
-        <div style={{ marginTop: '20px' }}>
-          <Button onClick={this.vote} variant="raised" size="small" color="primary">
-              Vote
-          </Button>
-        </div>
-        {
-            isAuthenticated && (
-              <Fragment>
-                <Button onClick={this.shareOnTwitter} variant="raised" size="small" color="primary" style={{ marginTop: '10px' }}>
-                        Share on Twitter
-                </Button>
-                <form onSubmit={this.addNewOption} style={{ marginTop: '-5px' }}>
-                  <TextField
-                    id="new-option"
-                    label="New option"
-                    margin="normal"
-                    value={this.state.newOption}
-                    onChange={this.handleChange('newOption')}
-                  />
-                  <br />
-                  <Button type="submit" variant="raised" size="small" color="primary">
-                  Add new option
+      <div style={{ padding: '18px' }}>
+        <Grid container spacing={24} justify="center">
+          <Grid item xs={12} sm={8}>
+            <Paper elevation={4}>
+              <div style={{ width: '100%', color: 'white', backgroundColor: '#2196F3', padding: '16px', boxSizing: 'border-box', textAlign: 'left'}}>
+                <Typography variant="headline" color="inherit" noWrap>
+                  <FontAwesomeIcon 
+                  icon={faUsers} 
+                  style={{marginRight: '12px'}}/>
+                  {title}
+                </Typography>
+              </div>
+              {chart}
+              <div style={{ padding: '24px' }}>
+                {optionsDiv}
+                <div style={{ marginTop: '20px' }}>
+                  <Button onClick={this.vote} variant="raised" size="small" color="primary">
+                    Vote
                   </Button>
-                </form>
-              </Fragment>
-            )
+                </div>
+              </div>
+            </Paper>
+          </Grid>
+          { 
+            (isAuthorized || isAuthenticated) 
+            &&
+            <RightPanel 
+              isAuthenticated={isAuthenticated}
+              isAuthorized={isAuthorized}
+              handleChange={this.handleChange}
+              newOption={newOption}
+              addNewOption={this.addNewOption}
+              shareOnTwitter={this.shareOnTwitter}
+              deletePoll={this.deletePoll}
+            />
           }
-        {isAuthorized && (
-        <Fragment>
-          <hr />
-          <Button style={{ marginBottom: '10px' }} onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
-                Delete
-          </Button>
-        </Fragment>
-          )}
+        </Grid>
       </div>
     );
   }

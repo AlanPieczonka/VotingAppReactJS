@@ -15,6 +15,10 @@ import NewPollPage from './components/pages/NewPollPage';
 import UserPollsPage from './components/pages/UserPollsPage';
 import UserRoute from './components/routes/UserRoute';
 import GuestRoute from './components/routes/GuestRoute';
+import fontawesome from '@fortawesome/fontawesome';
+import brands from '@fortawesome/fontawesome-free-brands'
+
+fontawesome.library.add(brands)
 
 const App = ({ snackbarMessage }) => (
   <div className="App">

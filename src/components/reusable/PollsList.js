@@ -5,6 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faUsers from '@fortawesome/fontawesome-free-solid/faUsers';
 
 class PollsList extends Component {
         state = {
@@ -37,6 +39,9 @@ class PollsList extends Component {
               <Link to={`/polls/${poll._id}`} style={{ textDecoration: 'none' }}>
                 <Paper className={classes.root} elevation={4}>
                   <Typography variant="headline" component="h3">
+                    <FontAwesomeIcon 
+                    icon={faUsers} 
+                    style={{marginRight: '12px'}}/>
                     {poll.title}
                   </Typography>
                 </Paper>
