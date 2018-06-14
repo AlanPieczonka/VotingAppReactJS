@@ -10,6 +10,8 @@ import { Field, reduxForm } from 'redux-form';
 import validate from '../../validation/NewPollValidation';
 import CreateTextField from '../fields/CreateTextField';
 import Grid from '@material-ui/core/Grid'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
 
 class NewPollPage extends Component {
   state = {
@@ -136,6 +138,9 @@ class NewPollPage extends Component {
               </div>
             }
               <Button type="submit" variant="raised" color="primary" disabled={pristine || submitting}>
+                <FontAwesomeIcon 
+                icon={faPlus}
+                style={{marginRight: '6px'}} />
                 Create
               </Button>
             </Grid>
