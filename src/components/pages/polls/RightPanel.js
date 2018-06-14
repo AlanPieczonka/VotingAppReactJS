@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
   return (
@@ -31,18 +32,38 @@ export default ({ isAuthenticated, isAuthorized, newOption, handleChange }) => {
             </Fragment>
           </Paper>
       )}
+      { isAuthenticated && (
+          <Paper>
+            <div style={{ width: '100%', color: 'white', backgroundColor: '#00BCD4', padding: '18px', marginTop: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
+              Social media
+            </div>
+            <div style={{ padding: '18px' }}>
+              <Button 
+              onClick={this.shareOnTwitter} 
+              variant="raised" 
+              size="small"
+              color="primary"
+              style={{backgroundColor: 'rgb(8,160,233)'}}
+              >
+                <FontAwesomeIcon 
+                icon={['fab', 'twitter']} 
+                style={{marginRight: '6px'}}/>
+                Share on Twitter
+              </Button>
+            </div>
+          </Paper>
+        )
+      }
       { isAuthorized && (
           <Paper elevation={4}>
-            <Fragment>
-              <div style={{ width: '100%', color: 'white', backgroundColor: '#F44336', padding: '18px', marginTop: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
-                Danger Zone
-              </div>
-              <div style={{ padding: '18px' }}>
-                  <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
-                      Delete Poll
-                  </Button>
-              </div>
-            </Fragment>
+            <div style={{ width: '100%', color: 'white', backgroundColor: '#F44336', padding: '18px', marginTop: '18px', boxSizing: 'border-box', textAlign: 'left'}}>
+              Danger Zone
+            </div>
+            <div style={{ padding: '18px' }}>
+                <Button onClick={this.deletePoll} type="button" variant="raised" size="small" color="secondary">
+                    Delete Poll
+                </Button>
+            </div>
           </Paper>
       )}
     </Grid>

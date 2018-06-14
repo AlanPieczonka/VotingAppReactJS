@@ -17,7 +17,6 @@ import prepareChart from './../../utils/prepareChart';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import RightPanel from './polls/RightPanel';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class SinglePollPage extends Component {
   state = {
@@ -144,23 +143,6 @@ class SinglePollPage extends Component {
                 </div>
               </div>
             </Paper>
-            { isAuthenticated && (
-                <Paper style={{marginTop: '16px', padding: '16px'}}>
-                  <Button 
-                  onClick={this.shareOnTwitter} 
-                  variant="raised" 
-                  size="small"
-                  color="primary"
-                  style={{backgroundColor: 'rgb(8,160,233)'}}
-                  >
-                    <FontAwesomeIcon 
-                    icon={['fab', 'twitter']} 
-                    style={{marginRight: '6px'}}/>
-                    Share on Twitter
-                  </Button>
-                </Paper>
-              )
-            }
           </Grid>
           { 
             (isAuthorized || isAuthenticated) 
