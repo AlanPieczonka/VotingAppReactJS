@@ -4,4 +4,4 @@
 ### To run
 1. Run the [API](https://github.com/AlanPieczonka/VotingAppExpressJS)
 2. Open terminal and run command "yarn dev"
-![Project's screenshot](https://user-images.githubusercontent.com/20932829/41442357-1d2ec08a-7037-11e8-8307-862909d972f0.png)
+![Project's screenshot](https://user-images.githubusercontent.com/20932829/41442485-bc1c8fec-7037-11e8-9341-272969ad3d0c.png)
