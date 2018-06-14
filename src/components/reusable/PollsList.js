@@ -44,8 +44,6 @@ class PollsList extends Component {
                     style={{marginRight: '12px'}}/>
                     {poll.title}
                   </Typography>
-                  <Typography variant="">
-                  </Typography>
                 </Paper>
               </Link>
              </div>));
