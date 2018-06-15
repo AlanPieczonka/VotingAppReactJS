@@ -10,10 +10,14 @@ class MessageSnackbar extends Component {
     vertical: 'top',
     horizontal: 'center',
   }
+
   handleClose = () => {
     this.setState({ open: false });
-    this.props.closeSnackbar();
+    setTimeout(() => {
+      this.props.closeSnackbar();
+    }, 100);
   }
+
   render() {
     const { open, vertical, horizontal } = this.state;
     const { message } = this.props;
@@ -38,10 +42,8 @@ MessageSnackbar.propTypes = {
   closeSnackbar: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    closeSnackbar: () => dispatch(closeSnackbar()),
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  closeSnackbar: () => dispatch(closeSnackbar()),
+});
 
 export default connect(null, mapDispatchToProps)(MessageSnackbar);
