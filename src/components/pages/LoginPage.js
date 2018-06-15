@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 import LoginForm from '../forms/LoginForm';
 import { login } from '../../actions/auth';
 import { showSnack } from '../../actions/snackbar';
-import Grid from '@material-ui/core/Grid';
 
 const LoginPage = (props) => {
   const handleSignIn = (values) => {
